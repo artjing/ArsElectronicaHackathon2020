@@ -36,11 +36,6 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-//	ofxOscMessage m;
-//	m.setAddress("/mouse/position");
-//	m.addFloatArg(ofMap(ofGetMouseX(), 0, ofGetWidth(), 0.f, 1.f, true));
-//	m.addFloatArg(ofMap(ofGetMouseY(), 0, ofGetHeight(), 0.f, 1.f, true));
-//	sender.sendMessage(m, false);
 }
 
 //--------------------------------------------------------------
@@ -60,34 +55,6 @@ void ofApp::keyPressed(int key){
     }
     
     if(key == 'g')guiON = !guiON;
-    
-	// send a test message
-	if(key == 'a' || key == 'A'){
-		ofxOscMessage m;
-		m.setAddress("/test");
-		m.addIntArg(1);
-		m.addFloatArg(3.5f);
-		m.addStringArg("hello");
-		m.addFloatArg(ofGetElapsedTimef());
-		sender.sendMessage(m, false);
-	}
-
-	// send an image
-	// note: the size of the image depends greatly on your network buffer sizes,
-	// if an image is too big the message won't come through and you may need
-	// to break it up into multiple blobs
-//	if(key == 'i' || key == 'I'){
-//
-//		// load image from buffer
-//		img.load(imgAsBuffer);
-//
-//		// send as a binary blob
-//		ofxOscMessage m;
-//		m.setAddress("/image");
-//		m.addBlobArg(imgAsBuffer);
-//		sender.sendMessage(m);
-//		ofLog() << "sending image with size: " << imgAsBuffer.size();
-//	}
 }
 
 
