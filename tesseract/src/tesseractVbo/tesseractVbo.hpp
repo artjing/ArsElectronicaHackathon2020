@@ -25,7 +25,7 @@ class tesseractVbo{
     glm::vec4 TesseractPoint(glm::vec3 pOriginal, float depth, float fourthD);
     void TesseractInit(glm::vec4* projected, float size, ofVboMesh* tesseract);
     void TesseractUpdate(glm::vec4* projected, float size, ofVboMesh* tesseract);
-    void addVertexToVbo(int offset, int i, int j, int k, ofVboMesh* v, glm::vec4* p);
+    void addVertexToVbo(int offset, int i, int j, ofVboMesh* v, glm::vec4* p);
     void setVertexToVbo(int offset, int i, int j, ofVboMesh* v, glm::vec4* p, int index);
     void selectMat(std::string name, glm::mat4x4* m);
     

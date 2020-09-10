@@ -28,12 +28,12 @@ void tesseractVbo::processTesseract(ofVboMesh* vbos){
     float depth = 20;
     float fourthD = 20;
     
-    for(int i = 0; i < vbos->getNumVertices(); i+=1){
+    for(int i = 0; i < vbos->getNumVertices(); i+=6){
         projected.push_back(TesseractPoint(vbos->getVertex(i), depth, fourthD));
     }
-//    for(int i = 0; i < vbos->getNumVertices(); i+=1){
-//        projected.push_back(TesseractPoint(vbos->getVertex(i), -depth, -fourthD));
-//    }
+    for(int i = 0; i < vbos->getNumVertices(); i+=6){
+        projected.push_back(TesseractPoint(vbos->getVertex(i), -depth, -fourthD));
+    }
     
     if(!initTesseract){
         TesseractInit(&projected[0], projected.size(), &vboT);
@@ -65,25 +65,24 @@ glm::vec4 tesseractVbo::TesseractPoint(glm::vec3 pOriginal, float depth, float f
 
 void tesseractVbo::TesseractInit(glm::vec4* projected, float size, ofVboMesh* tesseract){
     
-//    initTesseract = true;
+    initTesseract = true;
     tesseract->clear();
-    tesseract->setMode(OF_PRIMITIVE_TRIANGLES);
+    tesseract->setMode(OF_PRIMITIVE_LINES);
     int s_4 = int(size / 4.0);
     int s_2 = int(size / 2.0);
-    for( int i = 0; i < size; i++){
-        
-        addVertexToVbo(0, i,  (i+1), (i+2), tesseract, projected);
-//        addVertexToVbo(0, i + s_2, (i + 1 + s_2) % s_2, tesseract, projected);
-//        addVertexToVbo(0, i, i + s_2, tesseract, projected);
-    }
-
     for( int i = 0; i < s_2; i++){
-
-//       addVertexToVbo(s_2, i,  (i+1) % s_2, tesseract, projected);
-//       addVertexToVbo(s_2, i + s_2, (i + 1 + s_2) % s_2, tesseract, projected);
-//       addVertexToVbo(s_2, i, i + s_2, tesseract, projected);
-
+        
+        addVertexToVbo(0, i,  (i+1) % s_2 , tesseract, projected);
+        addVertexToVbo(0, i + s_2, (i + 1) % s_2 + s_2, tesseract, projected);
+        addVertexToVbo(0, i, i + s_2, tesseract, projected);
     }
+
+//    for( int i = 0; i < s_2; i++){
+//
+//       addVertexToVbo(s_2, i,  (i+1) % s_4, tesseract, projected);
+//       addVertexToVbo(s_2, i + s_4, (i + 1) % s_4 + s_4, tesseract, projected);
+//       addVertexToVbo(s_2, i, i + s_4, tesseract, projected);
+//    }
 
 //    for( int i = 0; i < s_2; i++){
 //
@@ -92,21 +91,29 @@ void tesseractVbo::TesseractInit(glm::vec4* projected, float size, ofVboMesh* te
     
 }
 
-void tesseractVbo::addVertexToVbo(int offset, int i, int j, int k, ofVboMesh* v, glm::vec4* p){
+void tesseractVbo::addVertexToVbo(int offset, int i, int j, ofVboMesh* v, glm::vec4* p){
         
     glm::vec4 a = *(p + i + offset);
     glm::vec4 b = *(p + j + offset);
-    glm::vec4 c = *(p + k + offset);
     
     v->addVertex(ofVec3f(a.x * rescaleAmp, a.y * rescaleAmp, a.z * rescaleAmp));
     v->addVertex(ofVec3f(b.x * rescaleAmp, b.y * rescaleAmp, b.z * rescaleAmp));
-    v->addVertex(ofVec3f(c.x * rescaleAmp, c.y * rescaleAmp, c.z * rescaleAmp));
     
 }
 
 
 
 void tesseractVbo::TesseractUpdate(glm::vec4* projected, float size, ofVboMesh* tesseract){
+//
+//    int s_4 = int(size / 4.0);
+//    int s_2 = int(size / 2.0);
+//    for( int i = 0; i < s_2; i++){
+//
+//        addVertexToVbo(0, i,  (i+1) % s_2 , tesseract, projected);
+//        addVertexToVbo(0, i + s_2, (i + 1) % s_2 + s_2, tesseract, projected);
+//        addVertexToVbo(0, i, i + s_2, tesseract, projected);
+//    }
+//
     
     int s_4 = int(size / 4.0);
     int s_2 = int(size / 2.0);
@@ -115,9 +122,9 @@ void tesseractVbo::TesseractUpdate(glm::vec4* projected, float size, ofVboMesh* 
         
         setVertexToVbo(0, i,  (i+1) % s_2 , tesseract, projected, index);
         setVertexToVbo(0, i + s_2, (i + 1) % s_2 + s_2, tesseract, projected, index + 2);
-//        setVertexToVbo(0, i, i + s_2, tesseract, projected, index + 4);
+        setVertexToVbo(0, i, i + s_2, tesseract, projected, index + 4);
         
-        index += 4;
+        index += 6;
     }
 
 //    for( int i = 0; i < s_4; i++){
