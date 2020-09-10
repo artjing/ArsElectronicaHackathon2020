@@ -28,6 +28,8 @@
 	<string>public.app-category.entertainment</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>yes</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2016 Affectiva. All rights reserved.</string>
 	<key>NSMainNibFile</key>
