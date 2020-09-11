@@ -36,22 +36,12 @@ video.addEventListener('play', () => {
     if(detections[0].expressions.neutra > threshold)l.push({"emotion":"neutra","val":detections[0].expressions.neutra});
     if(detections[0].expressions.sad > threshold)l.push({"emotion":"sad","val":detections[0].expressions.sad});
 
-    // const happyString = detections[0].expressions.happy
-    // const angryString = detections[0].expressions.angry
-    // const disgustedString = detections[0].expressions.disgusted
-    // const fearString = detections[0].expressions.fear
-    // const surprisedString = detections[0].expressions.surprise
-    // const neutralString = detections[0].expressions.neutra
-    // const sadString = detections[0].expressions.sad
     setoutEmotionData(l);
-    // setoutEmotionData([happyString, angryString, disgustedString, fearString, surprisedString, neutralString, sadString])
 
-    // console.log(detections)
-
-    // const resizedDetections = faceapi.resizeResults(detections, displaySize)
-    // canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+    const resizedDetections = faceapi.resizeResults(detections, displaySize)
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
     // faceapi.draw.drawDetections(canvas, resizedDetections)
     // faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
-    // faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
+    faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
   }, 200)
 })
