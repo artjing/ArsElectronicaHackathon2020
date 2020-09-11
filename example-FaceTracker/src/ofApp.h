@@ -17,4 +17,7 @@ public:
     
     ofxFaceTracker2 tracker;
     ofVideoGrabber grabber;
+    
+    
+    ofPolyline p;
 };

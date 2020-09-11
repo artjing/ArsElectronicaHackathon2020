@@ -270,7 +270,7 @@ void ofxFaceTracker2::drawDebug(int x, int y, int _w, int _h) const{
         if(_w != info.inputWidth || _h != info.inputHeight){
             ofScale((float)_w/info.inputWidth, (float)_h/info.inputHeight);
         }
-        
+        pScrambled.clear();
         for (auto instance : getInstances()){
             ofNoFill();
             
@@ -298,6 +298,12 @@ void ofxFaceTracker2::drawDebug(int x, int y, int _w, int _h) const{
         
     } ofPopStyle();
     ofPopMatrix();
+}
+
+
+void ofxFaceTracker2::scramblePoints(ofPolyline p){
+    int rIndex;
+    pScrambled.addVertex(p.get);
 }
 
 void ofxFaceTracker2::drawDebugPose() {

@@ -76,6 +76,9 @@ public:
 protected:
     std::vector<ofxFaceTracker2Instance> instances;
     
+    ofPolyline pScrambled;
+    void scramblePoints(ofPolyline p);
+    
     ofxCv::Tracker<cv::Rect> faceRectanglesTracker;
     
     void runFaceDetector(bool lockMutex);
