@@ -24,7 +24,7 @@ class ofApp : public ofBaseApp{
     
     
 		ofTrueTypeFont font;
-		ofxOscSender sender;
+		ofxOscSender maxSender, pythonSender;
     
     glm::vec2 resImg;
     
