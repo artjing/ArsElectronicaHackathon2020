@@ -25,6 +25,7 @@ class ofApp : public ofBaseApp{
     
 		ofTrueTypeFont font;
 		ofxOscSender maxSender, pythonSender;
+        ofxOscReceiver emotioReceiver;
     
     glm::vec2 resImg;
     

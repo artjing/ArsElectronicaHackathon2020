@@ -27,16 +27,20 @@ video.addEventListener('play', () => {
     // resetColor()
 
     var l = [];
-    var threshold = 0.;
-    if(detections[0].expressions.happy > threshold)l.push({"emotion":"happy","val":detections[0].expressions.happy});
-    if(detections[0].expressions.angry > threshold)l.push({"emotion":"angry","val":detections[0].expressions.angry});
-    if(detections[0].expressions.disgusted > threshold)l.push({"emotion":"disgusted","val":detections[0].expressions.disgusted});
-    if(detections[0].expressions.fear > threshold)l.push({"emotion":"fear","val":detections[0].expressions.fear});
-    if(detections[0].expressions.surprise > threshold)l.push({"emotion":"surprise","val":detections[0].expressions.surprise});
-    if(detections[0].expressions.neutra > threshold)l.push({"emotion":"neutra","val":detections[0].expressions.neutra});
-    if(detections[0].expressions.sad > threshold)l.push({"emotion":"sad","val":detections[0].expressions.sad});
+    var threshold = 0.1;
+    if(detections != null){
+      if(detections[0].expressions.happy > threshold)l.push({"emotion":"happy","val":detections[0].expressions.happy});
+      if(detections[0].expressions.angry > threshold)l.push({"emotion":"angry","val":detections[0].expressions.angry});
+      if(detections[0].expressions.disgusted > threshold)l.push({"emotion":"disgusted","val":detections[0].expressions.disgusted});
+      if(detections[0].expressions.fear > threshold)l.push({"emotion":"fear","val":detections[0].expressions.fear});
+      if(detections[0].expressions.surprise > threshold)l.push({"emotion":"surprise","val":detections[0].expressions.surprise});
+      if(detections[0].expressions.neutra > threshold)l.push({"emotion":"neutra","val":detections[0].expressions.neutra});
+      if(detections[0].expressions.sad > threshold)l.push({"emotion":"sad","val":detections[0].expressions.sad});
 
+
+    }
     setoutEmotionData(l);
+    setoutMainEmotion(l);
 
     const resizedDetections = faceapi.resizeResults(detections, displaySize)
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)

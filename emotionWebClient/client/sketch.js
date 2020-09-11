@@ -104,10 +104,30 @@ function setoutEmotionData(e) {
   if (isConnected) {
     for(var i = 0;i<e.length;i++){
       // console.log(e[i]);
-      socket.emit('message', [e[i].emotion, e[i].val]);
+      socket.emit('message', ["/"+e[i].emotion, e[i].val]);
     }
   }
 }
+
+function setoutMainEmotion(e){
+  if (isConnected) {
+    var maxValEmotion = 0;
+    var maxIndex = -1;
+      for(var i = 0;i<e.length;i++){
+        // console.log(e[i]);
+
+        if(e[i].val > maxValEmotion){
+          maxIndex = i;
+          maxValEmotion = e[i].val;
+        }
+      }
+    }
+
+    if(maxIndex != -1){
+      socket.emit('message', ["/mainEmotion", e[maxIndex].emotion, e[maxIndex].val]);
+    }
+}
+
 
 function receiveOsc(address, value) {
   console.log("received OSC: " + address + ", " + value);

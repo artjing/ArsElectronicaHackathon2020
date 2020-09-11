@@ -15,6 +15,7 @@ void ofApp::setup(){
     
 	pythonSender.setup(HOST, PYTHONPORT);
     maxSender.setup(HOST, MAXPORT);
+    emotioReceiver.setup(EMOTIONPORT);
     
     emotionState = 0;
     states.push_back("sad");
@@ -37,6 +38,37 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    while(emotioReceiver.hasWaitingMessages()){
+
+        // get the next message
+        ofxOscMessage m;
+        emotioReceiver.getNextMessage(m);
+        
+        if(m.getAddress() == "/happy"){
+            cout << "happiness val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/angry"){
+            cout << "angriness val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/disgusted"){
+            cout << "disgusted val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/fear"){
+            cout << "fear val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/surprise"){
+            cout << "surprise val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/neutra"){
+            cout << "neutra val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/sad"){
+            cout << "sad val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/mainEmotion"){
+            cout << "mainEmotion : " << ofToString(m.getArgAsString(0)) << " = " << ofToString(m.getArgAsFloat(1))<< endl;
+        }
+    }
 }
 
 //--------------------------------------------------------------
