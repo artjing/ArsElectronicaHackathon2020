@@ -13,7 +13,8 @@ void ofApp::setup(){
     
     resImg = glm::vec2(ofGetWidth(), ofGetHeight());
     
-	sender.setup(HOST, MAXPORT);
+	pythonSender.setup(HOST, PYTHONPORT);
+    maxSender.setup(HOST, MAXPORT);
     
     emotionState = 0;
     states.push_back("sad");
@@ -69,9 +70,14 @@ void ofApp::emotionCallback(int& nEmotion){
 
     emotionState = nEmotion;
     
-    ofxOscMessage m;
-    m.setAddress("/emotion");
-    m.addStringArg(states[emotionState]);
-    sender.sendMessage(m, false);
+    ofxOscMessage mPython, mMax;
+    mPython.setAddress("/emotion");
+    mPython.addStringArg(states[emotionState]);
+    mMax.setAddress("/emotion");
+    mMax.addStringArg(states[emotionState]);
+    
+    maxSender.sendMessage(mMax, false);
+    pythonSender.sendMessage(mPython, false);
+    
     logPrint("sending new emotionState : " + ofToString(states[emotionState]));
 }

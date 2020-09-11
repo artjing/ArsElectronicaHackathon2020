@@ -6,7 +6,7 @@ void ofApp::setup(){
     ofSetLogLevel(OF_LOG_VERBOSE);
     // basic connection:
 //     client.connect("echo.websocket.org");
-     client.connect("localhost",9092, false);
+     client.connect("localhost",9000, false);
     // OR optionally use SSL
 //     client.connect("echo.websocket.org", true);
     
