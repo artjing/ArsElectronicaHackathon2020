@@ -15,6 +15,8 @@ var to_next;
 var socket;
 var isConnected;
 
+let portEmotionSending = 6665;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   //background(color(colors[count][0]));
@@ -25,31 +27,31 @@ function setup() {
   to = color(colors[(count+1)%10][0]);
   to_next = color(colors[(count+2)%10][0]);
 
-  setupOsc(8338, 6667);
+  setupOsc(8338, portEmotionSending);
 
 }
 
 
 function draw(){
+background(240, 220, 100);
 
+// if ((((millis()-old_millis))/my_interval)>=1){
+// count = (count + 1)%10;
+// old_millis = millis();
+
+// }
 	
-if ((((millis()-old_millis))/my_interval)>=1){
-count = (count + 1)%10;
-old_millis = millis();
+// from = color(colors[count][0]);
+// from_next = color(colors[(count+1)%10][1]);
 
-}
-	
-from = color(colors[count][0]);
-from_next = color(colors[(count+1)%10][1]);
+// to = color(colors[(count+1)%10][0]);
+// to_next = color(colors[(count+2)%10][0]);
+//   setGradient(0, 0, width, height, color(lerpColor(from, to, ((millis()-old_millis))/my_interval)), color(lerpColor(to, to_next, ((millis()-old_millis))/my_interval)), Math.round(Math.random()));
 
-to = color(colors[(count+1)%10][0]);
-to_next = color(colors[(count+2)%10][0]);
-  setGradient(0, 0, width, height, color(lerpColor(from, to, ((millis()-old_millis))/my_interval)), color(lerpColor(to, to_next, ((millis()-old_millis))/my_interval)), Math.round(Math.random()));
-
-  // send these over OSC to AbletonOSC after you've selected 8 parameters to modify
-  if (isConnected) {
-    //socket.emit('message', ['/wek/outputs', '1', '2', '3', '4']);
-  }
+//   // send these over OSC to AbletonOSC after you've selected 8 parameters to modify
+//   if (isConnected) {
+//     //socket.emit('message', ['/wek/outputs', '1', '2', '3', '4']);
+//   }
 
 }
 
@@ -97,10 +99,13 @@ function touchStarted() {
 }
 
 
-function setoutEmotionData(emotions) {
+function setoutEmotionData(e) {
   // send these over OSC to AbletonOSC after you've selected 8 parameters to modify
   if (isConnected) {
-    socket.emit('message', ['/emotion/happyValue', emotions[0]]);
+    for(var i = 0;i<e.length;i++){
+      // console.log(e[i]);
+      socket.emit('message', [e[i].emotion, e[i].val]);
+    }
   }
 }
 
