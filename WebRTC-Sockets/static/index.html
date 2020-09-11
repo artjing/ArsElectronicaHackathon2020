@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="description" content="WebRTC code samples">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <meta itemprop="description" content="Client-side WebRTC code samples">
+    <meta itemprop="name" content="WebRTC code samples">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta id="theme-color" name="theme-color" content="#ffffff">
+
+    <base target="_blank">
+
+    <title>Multiple peer connections</title>
+    <link rel="stylesheet" href="../static/css/main.css"/>
+
+</head>
+
+<body>
+
+<div id="container">
+
+    <h1><span>Multiple peer connections</span></h1>
+
+    <video id="video1" playsinline autoplay muted></video>
+    <video id="video2" playsinline autoplay></video>
+    <video id="video3" playsinline autoplay></video>
+    <video id="video4" playsinline autoplay></video>
+    <video id="video5" playsinline autoplay></video>
+
+    <div class="messagebox">
+      <label for="message">Enter a message:
+        <input type="text" name="message" id="message" placeholder="Message text" 
+                  inputmode="latin" size=60 maxlength=120 disabled>
+      </label>
+      <button id="sendButton" name="sendButton" class="buttonright" disabled>
+          Send
+      </button>
+    </div>
+    <div class="messagebox" id="receivebox">
+        <p>Messages received:</p>
+    </div>
+
+
+    <div class="controlbox">
+        <button id="connectButton" name="connectButton" class="buttonleft">
+          Connect
+        </button>
+        <button id="callButton">Call</button>
+        <button id="disconnectButton" name="disconnectButton" class="buttonright" disabled>
+          Disconnect
+        </button>
+      </div>
+
+    <p>View the console to see logging and to inspect the <code>MediaStream</code> object <code>localStream</code>.</p>
+
+</div>
+
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="../static/js/main.js" async></script>
+
+</body>
+</html>
