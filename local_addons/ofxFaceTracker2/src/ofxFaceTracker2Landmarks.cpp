@@ -116,7 +116,7 @@ ofMesh ofxFaceTracker2Landmarks::getMesh(vector<T> points) const {
     
     ofMesh mesh;
     mesh.setMode(OF_PRIMITIVE_TRIANGLES);
-
+    mesh.addTexCoord(ofVec2f(0,0));
     for( size_t i = 0; i < triangleList.size(); i++ )
     {
         cv::Vec6f t = triangleList[i];
@@ -139,6 +139,7 @@ ofMesh ofxFaceTracker2Landmarks::getMesh(vector<T> points) const {
             
         }
     }
+    mesh.addTexCoord(ofVec2f(1., 1.));
     return mesh;
     
 }

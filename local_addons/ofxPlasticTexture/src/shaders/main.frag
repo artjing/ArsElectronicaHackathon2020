@@ -97,7 +97,7 @@ vec3 globalNoise(vec2 uv){
     vec3 n = vec3(0);
     
     
-    uv *= 5 + 4 * cos(u_time * 0.01);
+    uv *= 1 + 1 * cos(u_time * 0.01);
     
     uv = rotate2d(PI / 6) * uv;
     uv -= noise(uv * .6);
@@ -132,7 +132,8 @@ vec3 globalNoise(vec2 uv){
 void main( void )
 {
     vec2 uv = texCoordVarying;
-    uv.x *= u_resImg.x / u_resImg.y;
+    uv /= u_resImg;
+//    uv.x *= u_resImg.x / u_resImg.y;
     
     orchid += vec3(.3 * cos(u_time* .2), 0,0);
     turquoise += vec3(0, .5 + .5 * cos(u_time * .2), .5 + .5 * sin(u_time * .3));

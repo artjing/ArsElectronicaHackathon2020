@@ -25,9 +25,7 @@ video.addEventListener('play', () => {
   faceapi.matchDimensions(canvas, displaySize)
   setInterval(async () => {
     const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
-    resetColor()
-
-
+    // resetColor()
 
 
     var l = [];
@@ -54,4 +52,3 @@ video.addEventListener('play', () => {
   }, 200)
 })
 
-setupOsc(8338, 6667);

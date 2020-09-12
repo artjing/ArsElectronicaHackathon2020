@@ -15,6 +15,7 @@
 #include "constants.hpp"
 
 #include "ofxShaderGlitch.h"
+#include "ofxPlasticTexture.hpp"
 
 
 struct Emotion{
@@ -22,6 +23,7 @@ struct Emotion{
     std::string descriptor;
     // index in the array
     int index;
+    float intensityEmotion;
 };
 
 
@@ -56,6 +58,7 @@ public:
     veronoiMesh vMesh;
     
     Emotion userEmotion;
+    
     void changeEmotion();
 
     std::vector < std::string > arraysEmotions;
@@ -63,6 +66,7 @@ public:
     bool guiON;
     ofxPanel gui;
     ofParameter < int > emotionState;
+    ofParameter < float > emotionIntensity;
     void emotionCallback(int& nEmotion);
 
 
@@ -72,7 +76,6 @@ public:
     
     glm::vec2 resImg;
     
-    std::vector < std::string > states;
     void stateUpdate();
     void emotionReceivingOSC();
     
@@ -84,7 +87,9 @@ public:
     }
     
     
-    
     // postProcessing
 //    ofxShaderGlitch glitch;
+    
+    ofxPlasticTexture p;
+    ofTexture t;
 };

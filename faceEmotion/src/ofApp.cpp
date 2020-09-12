@@ -18,17 +18,33 @@ void ofApp::setup(){
     emotioReceiver.setup(EMOTIONPORT);
     
     emotionState = 0;
-    states.push_back("sad");
-    states.push_back("angry");
-    states.push_back("happy");
-    states.push_back("hopeless");
+    
+    /*
+     
+    happy
+    angry
+    disgusted
+    fear
+    surprise
+    neutra
+    sad
+     
+    */
+    arraysEmotions.push_back("happy");
+    arraysEmotions.push_back("angry");
+    arraysEmotions.push_back("disgusted");
+    arraysEmotions.push_back("fear");
+    arraysEmotions.push_back("surprise");
+    arraysEmotions.push_back("neutra");
+    arraysEmotions.push_back("sad");
     
     
     
     
     guiON = false;
     gui.setup("Control Panel");
-    gui.add(emotionState.set("emotionState", 0, 0, states.size() - 1));
+    gui.add(emotionState.set("emotionState", 0, 0, arraysEmotions.size() - 1));
+    gui.add(emotionIntensity.set("emotion Intensity", 0, 0, 1));
     gui.setPosition(resImg.x - 220, 20);
     
     emotionState.addListener(this, &ofApp::emotionCallback);
@@ -65,11 +81,9 @@ void ofApp::setup(){
     
     vMesh.setup();
     
-    
-    arraysEmotions.push_back("Angry");
-    arraysEmotions.push_back("Happy");
-    
 //    glitch.setup();
+    
+    p.setup();
     
 }
 
@@ -115,8 +129,27 @@ void ofApp::draw(){
     
     
     switch(userEmotion.index){
-    
+                    
+                    
     case 0 :
+        // HAPPY
+        ofSetColor(255, 255);
+//            p.begin();
+//            p.plane.draw();
+//            p.end();
+            
+            p.begin();
+             face.draw();
+            p.end();
+            
+            
+//            face.drawWireframe();
+           
+//        vMesh.draw();
+        
+        break;
+    
+    case 1 :
         // ANGER
         ofSetColor(255, 255);
         face.drawWireframe();
@@ -124,14 +157,6 @@ void ofApp::draw(){
         lines.draw();
         ofSetColor(255, 0, 0, 255);
         pTest.draw();
-        break;
-            
-            
-    case 1 :
-        // HAPPY
-        ofSetColor(255, 255);
-//        face.drawWireframe();
-        vMesh.draw();
         break;
     }
             
@@ -152,8 +177,20 @@ void ofApp::updateMeshFromFace(){
     
     if(n > 0){
         switch(userEmotion.index){
-            
-            case 0 :
+             case 0 :
+                // HAPPY
+                face.clearColors();
+//                vMesh.pts.clear();
+//                for( int i = 0; i < n; i+=3){
+//                //                for( int i = 0; i < points.size(); i+=1){
+//                    vMesh.pts.push_back(ofVec2f(face.getVertices()[i].x, face.getVertices()[i].y));
+//                //                    vMesh.pts.push_back(ofVec2f(points[i].x, points[i].y));
+//
+//                }
+//                vMesh.update();
+                break;
+                
+            case 1 :
                 // ANGER
                 lines.clear();
                 lines.setMode(OF_PRIMITIVE_LINES);
@@ -163,17 +200,7 @@ void ofApp::updateMeshFromFace(){
                 }
                 break;
             
-            case 1 :
-                // HAPPY
-                vMesh.pts.clear();
-                for( int i = 0; i < n; i+=3){
-//                for( int i = 0; i < points.size(); i+=1){
-                    vMesh.pts.push_back(ofVec2f(face.getVertices()[i].x, face.getVertices()[i].y));
-//                    vMesh.pts.push_back(ofVec2f(points[i].x, points[i].y));
-                    
-                }
-                vMesh.update();
-                break;
+           
         }
     }
 
@@ -260,23 +287,35 @@ void ofApp::emotionReceivingOSC(){
             cout << "sad val is : " << ofToString(m.getArgAsFloat(0)) << endl;
         }
         if(m.getAddress() == "/mainEmotion"){
-            cout << "mainEmotion : " << ofToString(m.getArgAsString(0)) << " = " << ofToString(m.getArgAsFloat(1))<< endl;
+            int indexMainEmotion = m.getArgAsInt(0);
+            int intensityEmotion = m.getArgAsFloat(2);
+            cout << "mainEmotion : " << ofToString(m.getArgAsString(1)) << " = " << ofToString(m.getArgAsFloat(2))<< endl;
+            
+            emotionState = indexMainEmotion;
+            emotionIntensity = intensityEmotion;
         }
     }
 }
 
 void ofApp::emotionCallback(int& nEmotion){
 
-    emotionState = nEmotion;
+    userEmotion.index = nEmotion;
+    userEmotion.descriptor = arraysEmotions[emotionState];
+    userEmotion.intensityEmotion = emotionIntensity;
     
     ofxOscMessage mPython, mMax;
     mPython.setAddress("/emotion");
-    mPython.addStringArg(states[emotionState]);
+    mPython.addStringArg(userEmotion.descriptor);
+    mPython.setAddress("/intensity");
+    mPython.addFloatArg(userEmotion.intensityEmotion);
+    
     mMax.setAddress("/emotion");
-    mMax.addStringArg(states[emotionState]);
+    mMax.addStringArg(userEmotion.descriptor);
+    mMax.setAddress("/intensity");
+    mMax.addFloatArg(userEmotion.intensityEmotion);
     
     maxSender.sendMessage(mMax, false);
     pythonSender.sendMessage(mPython, false);
     
-    logPrint("sending new emotionState : " + ofToString(states[emotionState]));
+    logPrint("sending new emotionState : " + ofToString(userEmotion.descriptor));
 }

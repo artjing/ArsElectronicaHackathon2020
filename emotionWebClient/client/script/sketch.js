@@ -27,6 +27,8 @@ function setup() {
   to_next = color(colors[(count+2)%10][0]);
 
 
+  setupOsc(8338, 6667);
+  
 }
 
 
@@ -90,7 +92,7 @@ function setoutEmotionData(emotions) {
       // console.log(e[i]);
       socket.emit('message', ["/"+e[i].emotion, e[i].val]);
     }
-    socket.emit('message', ['happy', emotions[0]],'angry', emotions[1],'disgusted', emotions[2],'fear', emotions[3],'surprised', emotions[4],'neutral', emotions[5],'sad', emotions[6);
+    // socket.emit('message', ['happy', emotions[0]],'angry', emotions[1],'disgusted', emotions[2],'fear', emotions[3],'surprised', emotions[4],'neutral', emotions[5],'sad', emotions[6);
   }
 }
 
@@ -109,7 +111,8 @@ function setoutMainEmotion(e){
     }
 
     if(maxIndex != -1){
-      socket.emit('message', ["/mainEmotion", e[maxIndex].emotion, e[maxIndex].val]);
+      console.log(maxIndex);
+      socket.emit('message', ["/mainEmotion", maxIndex, e[maxIndex].emotion, e[maxIndex].val]);
     }
 }
 
