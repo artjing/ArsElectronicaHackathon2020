@@ -21,5 +21,7 @@
 #define CUBESIZE 1000
 #define MAXSPEED 5
 
+#define MAXRAD 40
+#define MAXMOVECIRCLE .1
 
 

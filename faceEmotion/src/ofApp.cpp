@@ -6,8 +6,9 @@ void ofApp::setup(){
 #ifdef DEBUGMODE
     ofSetLogLevel(OF_LOG_VERBOSE);
 #endif
+    
         
-    ofSetWindowTitle("send OSC with GUI pannel");
+    ofSetWindowTitle("Face Emotion");
     ofSetFrameRate(60);
     ofSetVerticalSync(true);
     
@@ -77,6 +78,8 @@ void ofApp::setup(){
     }
     
     angerIntensity  = 10;
+
+    circles.clear();
     
     
     vMesh.setup();
@@ -130,35 +133,45 @@ void ofApp::draw(){
     
     switch(userEmotion.index){
                     
-                    
+
+                
     case 0 :
         // HAPPY
         ofSetColor(255, 255);
-            
-            p.begin();
-             face.draw();
-            p.end();
-            
-            
-            face.drawWireframe();
-           
-        
-        break;
+
+        p.begin();
+        face.draw();
+        p.end();
+
+
+        face.drawWireframe();
+          
+       
+       break;
+   
     
     case 1 :
-        // ANGER
-        ofSetColor(255, 255);
-        face.drawWireframe();
-        ofSetColor(255, 255);
-        lines.draw();
-        ofSetColor(255, 0, 0, 255);
-        pTest.draw();
-        break;
+        {
+            // ANGER
+            ofSetColor(255, 255);
+            face.drawWireframe();
+            ofSetColor(255, 255);
+            lines.draw();
+            ofSetColor(255, 0, 0, 255);
+            pTest.draw();
+            break;
+        }
+
 
     case 2 :
-        // DISGUSTED
-            ofSetColor(255, 255);
+        {
+            // DISGUSTED
             drawCircles();
+            
+            ofSetColor(255, 255);
+            face.drawWireframe();
+            break;
+        }
                 
     }
             
@@ -179,11 +192,27 @@ void ofApp::updateMeshFromFace(){
     
     if(n > 0){
         switch(userEmotion.index){
-             case 0 :
+                
+            case 0 :
                 // HAPPY
                 face.clearColors();
-                for( int i = 0; i < n; i+=3){
-                    
+                break;
+                
+             case 2 :
+                // DSIGUSTED
+                if(circles.size()<1){
+                    cout << "coing her" << endl;
+                    circles.clear();
+                    for( int i = 0; i < n; i+=3){
+                        circles.push_back(ofVec2f(face.getVertices()[i].x, face.getVertices()[i].y));
+                    }
+                }else{
+                    for( int i = 0; i < indicesToReSpawn.size(); i++){
+                        
+                        circles[indicesToReSpawn[i]]  = (ofVec2f(face.getVertices()[i].x, face.getVertices()[i].y));
+                        
+                    }
+                    indicesToReSpawn.clear();
                 }
 //                vMesh.pts.clear();
 //                for( int i = 0; i < n; i+=3){
@@ -193,6 +222,7 @@ void ofApp::updateMeshFromFace(){
 //
 //                }
 //                vMesh.update();
+                
                 break;
                 
             case 1 :
@@ -323,11 +353,55 @@ void ofApp::emotionCallback(int& nEmotion){
     pythonSender.sendMessage(mPython, false);
     
     logPrint("sending new emotionState : " + ofToString(userEmotion.descriptor));
+    
+    
+    
+    if(userEmotion.index != 0)initRad = false;
 }
 
 
 void ofApp::drawCircles(){
-//    for(int i = 0; i < circles.size(); i++){
-//        
-//    }
+    
+    int s = circles.size();
+    if(!initRad)initRadius(s);
+    
+    int r = radius.size();
+    
+    ofPushMatrix();
+    for(int i = 0; i < s; i++){
+        
+        ofVec3f rad = radius[i%r];
+        ofSetColor(0,0,255);
+        ofNoFill();
+        ofTranslate(0, 0, rad.z);
+        ofDrawCircle(circles[i].x, circles[i].y, rad.x);
+    }
+    ofPopMatrix();
+    
+    radiusEvolution();
+}
+
+
+void ofApp::initRadius(int size){
+    initRad = true;
+    radius.clear();
+    for(int i = 0; i < size; i++){
+        radius.push_back(ofVec3f(ofRandom(MAXRAD), pow(-1, int(ofRandom(2))) * .2, 0));
+    }
+}
+
+void ofApp::radiusEvolution(){
+    indicesToReSpawn.clear();
+    for( int i = 0; i < radius.size(); i++){
+        radius[i].x += emotionIntensity * ofNoise(ofGetElapsedTimef()* .1 + i * 20);
+        radius[i].z += radius[i].y;
+        
+        if(radius[i].x > MAXRAD){
+//            cout << "need respawning for index = " << ofToString(i) << endl;
+            indicesToReSpawn.push_back(i);
+            radius[i].x = 0;
+            radius[i].z = 0;
+            radius[i].y = emotionIntensity * pow(-1, int(ofRandom(2))) * ofRandom(MAXMOVECIRCLE);
+        }
+    }
 }

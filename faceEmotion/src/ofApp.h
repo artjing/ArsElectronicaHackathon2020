@@ -94,4 +94,13 @@ public:
     ofTexture t;
     
     void drawCircles();
+    
+    
+    bool initRad;
+    std::vector < ofVec3f > radius;
+    std::vector < ofVec2f > circles;
+    void initRadius(int size);
+    void radiusEvolution();
+    
+    std::vector < int > indicesToReSpawn;
 };
