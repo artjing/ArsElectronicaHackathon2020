@@ -134,18 +134,14 @@ void ofApp::draw(){
     case 0 :
         // HAPPY
         ofSetColor(255, 255);
-//            p.begin();
-//            p.plane.draw();
-//            p.end();
             
             p.begin();
              face.draw();
             p.end();
             
             
-//            face.drawWireframe();
+            face.drawWireframe();
            
-//        vMesh.draw();
         
         break;
     
@@ -158,6 +154,12 @@ void ofApp::draw(){
         ofSetColor(255, 0, 0, 255);
         pTest.draw();
         break;
+
+    case 2 :
+        // DISGUSTED
+            ofSetColor(255, 255);
+            drawCircles();
+                
     }
             
     
@@ -180,6 +182,9 @@ void ofApp::updateMeshFromFace(){
              case 0 :
                 // HAPPY
                 face.clearColors();
+                for( int i = 0; i < n; i+=3){
+                    
+                }
 //                vMesh.pts.clear();
 //                for( int i = 0; i < n; i+=3){
 //                //                for( int i = 0; i < points.size(); i+=1){
@@ -318,4 +323,11 @@ void ofApp::emotionCallback(int& nEmotion){
     pythonSender.sendMessage(mPython, false);
     
     logPrint("sending new emotionState : " + ofToString(userEmotion.descriptor));
+}
+
+
+void ofApp::drawCircles(){
+//    for(int i = 0; i < circles.size(); i++){
+//        
+//    }
 }

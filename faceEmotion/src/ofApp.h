@@ -92,4 +92,6 @@ public:
     
     ofxPlasticTexture p;
     ofTexture t;
+    
+    void drawCircles();
 };
