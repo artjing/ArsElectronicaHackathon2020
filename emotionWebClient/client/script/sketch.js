@@ -47,9 +47,6 @@ to_next = color(colors[(count+2)%10][0]);
 
 }
 
-setupOsc(8338, 6667);
-
-
 function resetColor()
 {
 
@@ -89,7 +86,7 @@ function touchStarted() {
 function setoutEmotionData(emotions) {
   // send these over OSC to AbletonOSC after you've selected 8 parameters to modify
   if (isConnected) {
-    socket.emit('message', ['/emotion/happyValue', emotions[0]]);
+    socket.emit('message', ['happy', emotions[0]],'angry', emotions[1],'disgusted', emotions[2],'fear', emotions[3],'surprised', emotions[4],'neutral', emotions[5],'sad', emotions[6);
   }
 }
 
