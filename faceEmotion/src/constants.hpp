@@ -1,0 +1,25 @@
+//
+//  constants.hpp
+//  sendOSC
+//
+//  Created by Pierre Tardif on 10/09/2020.
+//
+#define WIDTH 1200
+#define HEIGHT 1200
+
+#define DEBUGMODE
+
+#define HOST "127.0.0.1"
+
+#define EMOTIONPORT 6665
+#define LOCALPORT 6666
+#define MAXPORT 6667
+#define PYTHONPORT 5005
+
+
+
+#define CUBESIZE 1000
+#define MAXSPEED 5
+
+
+

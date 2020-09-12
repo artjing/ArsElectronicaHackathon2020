@@ -157,14 +157,14 @@ class ofxVoronoi2D {
         for(int i = 0; i < 2; ++i){
           if(vind.find(p[i]) == vind.end()){
             vind.insert(std::pair<ofVec2f, Index>(p[i], vind.size()));
-            mesh.addVertex(ofVec3f(p[i]));
+              mesh.addVertex(ofVec3f(p[i].x + CSIZE / 2, p[i].y + CSIZE / 2, 0));
             // std::cout << "new v " << p[i] << "\n";
           }
         }
         for(int i = 0; i < sites; ++i){
           if(vind.find(s[i]) == vind.end()){
             vind.insert(std::pair<ofVec2f, Index>(s[i], vind.size()));
-            mesh.addVertex(ofVec3f(s[i]));
+              mesh.addVertex(ofVec3f(s[i].x + CSIZE / 2, s[i].y + CSIZE / 2, 0));
             // std::cout << "new s " << s[i] << "\n";
           }
         }

@@ -7,11 +7,15 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxOsc.h"
+#include "ofxGui.h"
+
 #include "ofxFaceTracker2.h"
 #include "veronoiMesh/veronoiMesh.hpp"
+#include "constants.hpp"
 
-#define CUBESIZE 1000
-#define MAXSPEED 5
+#include "ofxShaderGlitch.h"
+
 
 struct Emotion{
     // descriptor
@@ -55,4 +59,32 @@ public:
     void changeEmotion();
 
     std::vector < std::string > arraysEmotions;
+    
+    bool guiON;
+    ofxPanel gui;
+    ofParameter < int > emotionState;
+    void emotionCallback(int& nEmotion);
+
+
+    ofTrueTypeFont font;
+    ofxOscSender maxSender, pythonSender;
+    ofxOscReceiver emotioReceiver;
+    
+    glm::vec2 resImg;
+    
+    std::vector < std::string > states;
+    void stateUpdate();
+    void emotionReceivingOSC();
+    
+    // utils
+    void logPrint(std::string logPrint){
+#ifdef DEBUGMODE
+        cout << logPrint << endl;
+#endif
+    }
+    
+    
+    
+    // postProcessing
+//    ofxShaderGlitch glitch;
 };

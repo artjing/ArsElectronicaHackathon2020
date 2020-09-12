@@ -31,19 +31,19 @@ function setup() {
 
 
 function draw(){
+background(240, 220, 100);
+// if ((((millis()-old_millis))/my_interval)>=1){
+// count = (count + 1)%10;
+// old_millis = millis();
 
-if ((((millis()-old_millis))/my_interval)>=1){
-count = (count + 1)%10;
-old_millis = millis();
-
-}
+// }
 	
-from = color(colors[count][0]);
-from_next = color(colors[(count+1)%10][1]);
+// from = color(colors[count][0]);
+// from_next = color(colors[(count+1)%10][1]);
 
-to = color(colors[(count+1)%10][0]);
-to_next = color(colors[(count+2)%10][0]);
-  setGradient(0, 0, width, height, color(lerpColor(from, to, ((millis()-old_millis))/my_interval)), color(lerpColor(to, to_next, ((millis()-old_millis))/my_interval)), Math.round(Math.random()));
+// to = color(colors[(count+1)%10][0]);
+// to_next = color(colors[(count+2)%10][0]);
+//   setGradient(0, 0, width, height, color(lerpColor(from, to, ((millis()-old_millis))/my_interval)), color(lerpColor(to, to_next, ((millis()-old_millis))/my_interval)), Math.round(Math.random()));
 
 }
 
@@ -86,9 +86,35 @@ function touchStarted() {
 function setoutEmotionData(emotions) {
   // send these over OSC to AbletonOSC after you've selected 8 parameters to modify
   if (isConnected) {
+    for(var i = 0;i<e.length;i++){
+      // console.log(e[i]);
+      socket.emit('message', ["/"+e[i].emotion, e[i].val]);
+    }
     socket.emit('message', ['happy', emotions[0]],'angry', emotions[1],'disgusted', emotions[2],'fear', emotions[3],'surprised', emotions[4],'neutral', emotions[5],'sad', emotions[6);
   }
 }
+
+function setoutMainEmotion(e){
+  if (isConnected) {
+    var maxValEmotion = 0;
+    var maxIndex = -1;
+      for(var i = 0;i<e.length;i++){
+        // console.log(e[i]);
+
+        if(e[i].val > maxValEmotion){
+          maxIndex = i;
+          maxValEmotion = e[i].val;
+        }
+      }
+    }
+
+    if(maxIndex != -1){
+      socket.emit('message', ["/mainEmotion", e[maxIndex].emotion, e[maxIndex].val]);
+    }
+}
+
+
+
 
 
 function receiveOsc(address, value) {

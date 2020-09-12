@@ -13,6 +13,9 @@
 
 #include "ofxVoronoi2D.h"
 
+
+#define CSIZE 1000
+
 class veronoiMesh{
     public :
     veronoiMesh(){

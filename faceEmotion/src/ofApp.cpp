@@ -3,6 +3,37 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+#ifdef DEBUGMODE
+    ofSetLogLevel(OF_LOG_VERBOSE);
+#endif
+        
+    ofSetWindowTitle("send OSC with GUI pannel");
+    ofSetFrameRate(60);
+    ofSetVerticalSync(true);
+    
+    resImg = glm::vec2(ofGetWidth(), ofGetHeight());
+    
+    pythonSender.setup(HOST, PYTHONPORT);
+    maxSender.setup(HOST, MAXPORT);
+    emotioReceiver.setup(EMOTIONPORT);
+    
+    emotionState = 0;
+    states.push_back("sad");
+    states.push_back("angry");
+    states.push_back("happy");
+    states.push_back("hopeless");
+    
+    
+    
+    
+    guiON = false;
+    gui.setup("Control Panel");
+    gui.add(emotionState.set("emotionState", 0, 0, states.size() - 1));
+    gui.setPosition(resImg.x - 220, 20);
+    
+    emotionState.addListener(this, &ofApp::emotionCallback);
+    
+    
     userEmotion.descriptor = "Anger";
     userEmotion.index = 0;
     
@@ -38,10 +69,15 @@ void ofApp::setup(){
     arraysEmotions.push_back("Angry");
     arraysEmotions.push_back("Happy");
     
+//    glitch.setup();
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    
+    emotionReceivingOSC();
+    
     grabber.update();
     
     // Update tracker when there are new frames
@@ -70,6 +106,9 @@ void ofApp::draw(){
     
     // Draw tracker landmarks
 //    tracker.drawDebug();
+    
+    
+//    glitch.begin();
     ofEnableDepthTest();
     cam.begin();
     
@@ -91,7 +130,7 @@ void ofApp::draw(){
     case 1 :
         // HAPPY
         ofSetColor(255, 255);
-        face.drawWireframe();
+//        face.drawWireframe();
         vMesh.draw();
         break;
     }
@@ -100,19 +139,10 @@ void ofApp::draw(){
 //
     cam.end();
     ofDisableDepthTest();
+//    glitch.end();
     
-    // Draw estimated 3d pose
-//    tracker.drawDebugPose();
     
-    // Draw text UI
-    ofDrawBitmapStringHighlight("Framerate : "+ofToString(ofGetFrameRate()), 10, 20);
-    ofDrawBitmapStringHighlight("Tracker thread framerate : "+ofToString(tracker.getThreadFps()), 10, 40);
-    
-#ifndef __OPTIMIZE__
-    ofSetColor(ofColor::red);
-    ofDrawBitmapString("Warning! Run this app in release mode to get proper performance!",10,60);
-    ofSetColor(ofColor::white);
-#endif
+    if(guiON)gui.draw();
 }
 
 
@@ -135,10 +165,12 @@ void ofApp::updateMeshFromFace(){
             
             case 1 :
                 // HAPPY
-                std::vector < ofVec2f > pointVeronoi;
                 vMesh.pts.clear();
                 for( int i = 0; i < n; i+=3){
+//                for( int i = 0; i < points.size(); i+=1){
                     vMesh.pts.push_back(ofVec2f(face.getVertices()[i].x, face.getVertices()[i].y));
+//                    vMesh.pts.push_back(ofVec2f(points[i].x, points[i].y));
+                    
                 }
                 vMesh.update();
                 break;
@@ -185,13 +217,66 @@ void ofApp::keyPressed(int key){
     if(key == ' '){
         changeEmotion();
     }
+    
+    if(key == 'g')guiON = !guiON;
         
 }
 
 void ofApp::changeEmotion(){
     userEmotion.index += 1;
-    if(userEmotion.index > arraysEmotions.size())userEmotion.index = 0;
+    if(userEmotion.index > arraysEmotions.size()-1)userEmotion.index = 0;
     userEmotion.descriptor = arraysEmotions[userEmotion.index];
     
     cout << "userEmotion = " << userEmotion.descriptor << endl;
+}
+
+
+void ofApp::emotionReceivingOSC(){
+    while(emotioReceiver.hasWaitingMessages()){
+
+        // get the next message
+        ofxOscMessage m;
+        emotioReceiver.getNextMessage(m);
+        
+        if(m.getAddress() == "/happy"){
+            cout << "happiness val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/angry"){
+            cout << "angriness val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/disgusted"){
+            cout << "disgusted val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/fear"){
+            cout << "fear val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/surprise"){
+            cout << "surprise val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/neutra"){
+            cout << "neutra val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/sad"){
+            cout << "sad val is : " << ofToString(m.getArgAsFloat(0)) << endl;
+        }
+        if(m.getAddress() == "/mainEmotion"){
+            cout << "mainEmotion : " << ofToString(m.getArgAsString(0)) << " = " << ofToString(m.getArgAsFloat(1))<< endl;
+        }
+    }
+}
+
+void ofApp::emotionCallback(int& nEmotion){
+
+    emotionState = nEmotion;
+    
+    ofxOscMessage mPython, mMax;
+    mPython.setAddress("/emotion");
+    mPython.addStringArg(states[emotionState]);
+    mMax.setAddress("/emotion");
+    mMax.addStringArg(states[emotionState]);
+    
+    maxSender.sendMessage(mMax, false);
+    pythonSender.sendMessage(mPython, false);
+    
+    logPrint("sending new emotionState : " + ofToString(states[emotionState]));
 }

@@ -20,29 +20,29 @@ void veronoiMesh::update(){
     
     
     // update voronoi
-    if(pts.size() != count){
-        voronoi.compute(pts, ofRectangle(-imgRes.x / 2, -imgRes.y / 2, imgRes.x / 2, imgRes.y / 2), 0.0f);
+//    if(pts.size() != count){
+        voronoi.compute(pts, ofRectangle(-CSIZE, -CSIZE, CSIZE, CSIZE), 0.0f);
         count = pts.size();
         // rebuild mesh
         mesh.clear();
         voronoi.buildMesh(mesh);
 
 //        // random face colors
-        unsigned int N = mesh.getIndices().size(), M = mesh.getVertices().size();
-        vector<ofFloatColor> colors;
-        colors.resize(M);
-        for(unsigned int i = 0; i < N; i += 3){
-            ofFloatColor c(
-                ofRandom(1.0f), // R
-                ofRandom(1.0f), // G
-                ofRandom(1.0f)  // B
-            );
-            colors[mesh.getIndex(i + 0)] = c; // cell center
-            colors[mesh.getIndex(i + 1)] = ofFloatColor(1.0f, 1.0f, 1.0f, 0.0f); // cell border
-            colors[mesh.getIndex(i + 2)] = ofFloatColor(1.0f, 1.0f, 1.0f, 0.0f); // cell border
-        }
-        for(unsigned int i = 0; i < M; ++i) mesh.addColor(colors[i]);
-    }
+//        unsigned int N = mesh.getIndices().size(), M = mesh.getVertices().size();
+//        vector<ofFloatColor> colors;
+//        colors.resize(M);
+//        for(unsigned int i = 0; i < N; i += 3){
+//            ofFloatColor c(
+//                ofRandom(1.0f), // R
+//                ofRandom(1.0f), // G
+//                ofRandom(1.0f)  // B
+//            );
+//            colors[mesh.getIndex(i + 0)] = c; // cell center
+//            colors[mesh.getIndex(i + 1)] = ofFloatColor(1.0f, 1.0f, 1.0f, 0.0f); // cell border
+//            colors[mesh.getIndex(i + 2)] = ofFloatColor(1.0f, 1.0f, 1.0f, 0.0f); // cell border
+//        }
+//        for(unsigned int i = 0; i < M; ++i) mesh.addColor(colors[i]);
+//    }
 }
 
 void veronoiMesh::draw(){
