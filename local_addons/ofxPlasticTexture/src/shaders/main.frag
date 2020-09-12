@@ -97,7 +97,7 @@ vec3 globalNoise(vec2 uv){
     vec3 n = vec3(0);
     
     
-    uv *= 1 + 1 * cos(u_time * 0.01);
+    uv *= 8 + cos(u_time * 0.01);
     
     uv = rotate2d(PI / 6) * uv;
     uv -= noise(uv * .6);

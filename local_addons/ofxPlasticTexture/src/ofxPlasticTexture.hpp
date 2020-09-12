@@ -67,7 +67,7 @@ class ofxPlasticTexture{
     }
     void end(){
         shader.end();
-        if(textureMoving)timer += .01;
+        if(textureMoving)timer += .001;
     }
     
     void updateTexture()        {offset = glm::vec2(ofRandom(5.), ofRandom(5.));}
