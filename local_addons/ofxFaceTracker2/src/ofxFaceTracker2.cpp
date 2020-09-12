@@ -253,6 +253,16 @@ void ofxFaceTracker2::drawDebug(int x, int y) const{
     drawDebug(x, y, info.inputWidth, info.inputHeight);
 }
 
+ofMesh ofxFaceTracker2::getMesh(){
+    
+    ofMesh m;
+    if(failed) {
+        return m;
+    }else{
+        return getInstances()[0].getLandmarks().getImageMesh();
+    }
+}
+
 void ofxFaceTracker2::drawDebug(int x, int y, int _w, int _h) const{
     if(failed) {
         return;
@@ -270,19 +280,22 @@ void ofxFaceTracker2::drawDebug(int x, int y, int _w, int _h) const{
         if(_w != info.inputWidth || _h != info.inputHeight){
             ofScale((float)_w/info.inputWidth, (float)_h/info.inputHeight);
         }
-        pScrambled.clear();
         for (auto instance : getInstances()){
             ofNoFill();
             
             instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::LEFT_EYE).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::RIGHT_EYE).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::LEFT_EYEBROW).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::RIGHT_EYEBROW).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::NOSE_BRIDGE).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::NOSE_BASE).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::INNER_MOUTH).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::OUTER_MOUTH).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::JAW).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::RIGHT_EYE).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::LEFT_EYEBROW).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::RIGHT_EYEBROW).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::NOSE_BRIDGE).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::NOSE_BASE).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::INNER_MOUTH).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::OUTER_MOUTH).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::JAW).draw();
+            
+            
+//            ofMesh m = instance.getLandmarks().getImageMesh();
+//            m.drawWireframe();
             
             auto rect = instance.getBoundingBox();
             auto p = rect.getTopLeft();
@@ -301,10 +314,6 @@ void ofxFaceTracker2::drawDebug(int x, int y, int _w, int _h) const{
 }
 
 
-void ofxFaceTracker2::scramblePoints(ofPolyline p){
-    int rIndex;
-    pScrambled.addVertex(p.get);
-}
 
 void ofxFaceTracker2::drawDebugPose() {
     for(auto instance : getInstances()){

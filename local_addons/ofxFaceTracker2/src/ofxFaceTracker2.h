@@ -72,12 +72,12 @@ public:
     
     const std::vector<ofxFaceTracker2Instance> & getInstances() const;
     std::vector<ofxFaceTracker2Instance> & getInstances();
+    ofMesh face;
+    ofMesh getMesh();
     
 protected:
     std::vector<ofxFaceTracker2Instance> instances;
     
-    ofPolyline pScrambled;
-    void scramblePoints(ofPolyline p);
     
     ofxCv::Tracker<cv::Rect> faceRectanglesTracker;
     

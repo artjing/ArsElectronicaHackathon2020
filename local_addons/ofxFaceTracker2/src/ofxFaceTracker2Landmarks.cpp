@@ -116,10 +116,11 @@ ofMesh ofxFaceTracker2Landmarks::getMesh(vector<T> points) const {
     
     ofMesh mesh;
     mesh.setMode(OF_PRIMITIVE_TRIANGLES);
-    
+
     for( size_t i = 0; i < triangleList.size(); i++ )
     {
         cv::Vec6f t = triangleList[i];
+        
         
         cv::Point2f pt1 = cv::Point(cvRound(t[0]), cvRound(t[1]));
         cv::Point2f pt2 = cv::Point(cvRound(t[2]), cvRound(t[3]));
@@ -131,10 +132,11 @@ ofMesh ofxFaceTracker2Landmarks::getMesh(vector<T> points) const {
             glm::vec2 pt1V = ofxCv::toOf(pt1);
             glm::vec2 pt2V = ofxCv::toOf(pt2);
             glm::vec2 pt3V = ofxCv::toOf(pt3);
-
-            mesh.addVertex({pt1.x, pt1.y, 0.f});
-            mesh.addVertex({pt2.x, pt2.y, 0.f});
-            mesh.addVertex({pt3.x, pt3.y, 0.f});
+            
+            mesh.addVertex({pt1.x - info.inputWidth / 2, -(pt1.y - info.inputHeight / 2), 0.f});
+            mesh.addVertex({pt2.x - info.inputWidth / 2, -(pt2.y - info.inputHeight / 2), 0.f});
+            mesh.addVertex({pt3.x - info.inputWidth / 2, -(pt3.y - info.inputHeight / 2), 0.f});
+            
         }
     }
     return mesh;
