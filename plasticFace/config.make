@@ -3,7 +3,7 @@
 #   This file is where we make project specific configurations.
 ################################################################################
 
-OF_ROOT=../../..
+OF_ROOT=../../../../Documents/OpenFramwork/of_v0.11.0_osx_release
 
 ################################################################################
 # Custom Application Name
