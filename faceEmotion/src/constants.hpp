@@ -15,13 +15,15 @@
 #define LOCALPORT 6666
 #define MAXPORT 6667
 #define PYTHONPORT 5005
+#define AUTORECORD 6668
 
 
 
 #define CUBESIZE 1000
 #define MAXSPEED 5
 
-#define MAXRAD 40
-#define MAXMOVECIRCLE .1
+#define MAXRAD 20
+#define MAXMOVECIRCLE 10
+#define COLVAR 10
 
 

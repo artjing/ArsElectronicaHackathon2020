@@ -29,3 +29,14 @@ For example the example-FaceTracker should look like this:
 Then click update at the bottom and it should launch xcode.
 
 Then run it from xcode.
+
+
+## Controls
+
+```cpp
+key == 'g' // ==> show hide the GUI for emotions
+key == 'h' // ==> show / hide mouse
+key == LEFT_ARROW // ==> show / hide content
+key == RIGHT_ARROW // ==> show / hide content
+key == 'r' // sends the recording message to maxMSP and flashes screen red
+```

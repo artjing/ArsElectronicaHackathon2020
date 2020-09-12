@@ -52,9 +52,6 @@ public:
     
     void updatePointsPositions();
     
-    // emotions
-    float angerIntensity;
-    
     veronoiMesh vMesh;
     
     Emotion userEmotion;
@@ -71,7 +68,7 @@ public:
 
 
     ofTrueTypeFont font;
-    ofxOscSender maxSender, pythonSender;
+    ofxOscSender maxSender, pythonSender, maxAutoRecord;
     ofxOscReceiver emotioReceiver;
     
     glm::vec2 resImg;
@@ -95,12 +92,25 @@ public:
     
     void drawCircles();
     
+    bool hideMouse;
     
     bool initRad;
     std::vector < ofVec3f > radius;
     std::vector < ofVec2f > circles;
+    std::vector < ofColor > circleColors;
+    
+    float vQuat;
+    std::vector < glm::quat > quaternionCircles;
+    
     void initRadius(int size);
     void radiusEvolution();
     
     std::vector < int > indicesToReSpawn;
+    
+    bool displayContent;
+    void showHead();
+    ofColor happyColor;
+    
+    void startRecording();
+    bool redOnScreen;
 };

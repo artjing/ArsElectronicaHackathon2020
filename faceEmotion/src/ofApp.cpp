@@ -16,6 +16,7 @@ void ofApp::setup(){
     
     pythonSender.setup(HOST, PYTHONPORT);
     maxSender.setup(HOST, MAXPORT);
+    maxAutoRecord.setup(HOST, AUTORECORD);
     emotioReceiver.setup(EMOTIONPORT);
     
     emotionState = 0;
@@ -40,7 +41,9 @@ void ofApp::setup(){
     arraysEmotions.push_back("sad");
     
     
-    
+    displayContent = true;
+    hideMouse = false;
+    redOnScreen = false;
     
     guiON = false;
     gui.setup("Control Panel");
@@ -77,7 +80,6 @@ void ofApp::setup(){
         pTest.addVertex(points[i]);
     }
     
-    angerIntensity  = 10;
 
     circles.clear();
     
@@ -88,6 +90,8 @@ void ofApp::setup(){
     
     p.setup();
     
+    happyColor = ofColor(0, 255, 10);
+    vQuat = 400;
 }
 
 //--------------------------------------------------------------
@@ -128,61 +132,21 @@ void ofApp::draw(){
 //    glitch.begin();
     ofEnableDepthTest();
     cam.begin();
-    
-    
-    
-    switch(userEmotion.index){
-                    
-
-                
-    case 0 :
-        // HAPPY
-        ofSetColor(255, 255);
-
-        p.begin();
-        face.draw();
-        p.end();
-
-
-        face.drawWireframe();
-          
-       
-       break;
-   
-    
-    case 1 :
-        {
-            // ANGER
-            ofSetColor(255, 255);
-            face.drawWireframe();
-            ofSetColor(255, 255);
-            lines.draw();
-            ofSetColor(255, 0, 0, 255);
-            pTest.draw();
-            break;
-        }
-
-
-    case 2 :
-        {
-            // DISGUSTED
-            drawCircles();
-            
-            ofSetColor(255, 255);
-            face.drawWireframe();
-            break;
-        }
-                
-    }
-            
-    
-//
+    if(displayContent)showHead();
     cam.end();
     ofDisableDepthTest();
-//    glitch.end();
     
     
     if(guiON)gui.draw();
+    
+    if(redOnScreen){
+        ofPushMatrix();
+        cout << "redOnScreen" << endl;
+        redOnScreen = false;
+        ofSetColor(255, 0, 0);
+        ofDrawRectangle(0, 0, resImg.x, resImg.y);
+        ofPopMatrix();
+    }
 }
 
 
@@ -200,11 +164,26 @@ void ofApp::updateMeshFromFace(){
                 
              case 2 :
                 // DSIGUSTED
-                if(circles.size()<1){
-                    cout << "coing her" << endl;
-                    circles.clear();
-                    for( int i = 0; i < n; i+=3){
-                        circles.push_back(ofVec2f(face.getVertices()[i].x, face.getVertices()[i].y));
+//                if(circles.size()<1){
+//                    circles.clear();
+//                    for( int i = 0; i < n; i+=3){
+//                        circles.push_back(ofVec2f(face.getVertices()[i].x, face.getVertices()[i].y));
+//                    }
+//                }
+                
+                if(circles.size() < 1000){
+                    
+                    for( int i = 0; i < n; i += 3){
+                        if(ofRandom(1)> .3){
+                            circles.push_back(ofVec2f(face.getVertices()[i].x, face.getVertices()[i].y));
+                            radius.push_back(ofVec3f(ofRandom(MAXRAD), pow(-1, int(ofRandom(2))) * .2, 0));
+                            ofColor happyColorVariations = ofColor(happyColor.r + ofRandom(COLVAR),happyColor.g + ofRandom(COLVAR) - COLVAR / 2,happyColor.b + ofRandom(COLVAR));
+                            circleColors.push_back(happyColorVariations);
+
+                            glm::quat q = glm::vec3(ofRandom(vQuat) - vQuat / 2, ofRandom(vQuat) - vQuat / 2, ofRandom(vQuat) - vQuat / 2);
+                            quaternionCircles.push_back(q);
+                        }
+                        
                     }
                 }else{
                     for( int i = 0; i < indicesToReSpawn.size(); i++){
@@ -248,9 +227,9 @@ void ofApp::updatePointsPositions(){
     if(lines.getNumVertices() > 0)updateLines = true;
     for( int i = 0; i < points.size(); i++){
         
-        points[i].x += angerIntensity * speeds[i].x * ofNoise(ofGetElapsedTimef()* 6 + i * 20);
-        points[i].y += angerIntensity * speeds[i].y * ofNoise(ofGetElapsedTimef()* 6 + i * 20);
-        points[i].z += angerIntensity * speeds[i].z * ofNoise(ofGetElapsedTimef()* 12 + i * 20);
+        points[i].x += 10 * emotionIntensity * speeds[i].x * ofNoise(ofGetElapsedTimef()* 6 + i * 20);
+        points[i].y += 10 * emotionIntensity * speeds[i].y * ofNoise(ofGetElapsedTimef()* 6 + i * 20);
+        points[i].z += 10 * emotionIntensity * speeds[i].z * ofNoise(ofGetElapsedTimef()* 6 + i * 20);
         
         if(points[i].x > CUBESIZE / 2)points[i].x -= CUBESIZE;
         if(points[i].y > CUBESIZE / 2)points[i].y -= CUBESIZE;
@@ -270,17 +249,21 @@ void ofApp::updatePointsPositions(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     
-    if(key == '+'){
-        angerIntensity +=1;
-        if(angerIntensity > 20) angerIntensity = 1;
-        cout << "anger increased : " << ofToString(angerIntensity) << endl;
-    }
-    
-    if(key == ' '){
-        changeEmotion();
-    }
-    
     if(key == 'g')guiON = !guiON;
+    if(key == OF_KEY_LEFT || key == OF_KEY_RIGHT){
+        displayContent = !displayContent;
+    }
+    
+    if(key == 'h'){
+        hideMouse = !hideMouse;
+        if(hideMouse){
+            ofHideCursor();
+        }else{
+            ofShowCursor();
+        }
+    }
+    
+    if(key == 'r')startRecording();
         
 }
 
@@ -367,16 +350,24 @@ void ofApp::drawCircles(){
     
     int r = radius.size();
     
-    ofPushMatrix();
+    
     for(int i = 0; i < s; i++){
         
+        auto axis = glm::axis(quaternionCircles[i%r]);
+                                                  
         ofVec3f rad = radius[i%r];
-        ofSetColor(0,0,255);
+
+        ofPushMatrix();
         ofNoFill();
+        ofRotateDeg(10, axis.x, axis.y, axis.z);
         ofTranslate(0, 0, rad.z);
+        
+        ofPushStyle();
+        ofSetColor(circleColors[i%r]);
         ofDrawCircle(circles[i].x, circles[i].y, rad.x);
+        ofPopStyle();
+        ofPopMatrix();
     }
-    ofPopMatrix();
     
     radiusEvolution();
 }
@@ -385,23 +376,96 @@ void ofApp::drawCircles(){
 void ofApp::initRadius(int size){
     initRad = true;
     radius.clear();
+    
     for(int i = 0; i < size; i++){
         radius.push_back(ofVec3f(ofRandom(MAXRAD), pow(-1, int(ofRandom(2))) * .2, 0));
+        ofColor happyColorVariations = ofColor(happyColor.r + ofRandom(COLVAR),happyColor.g + ofRandom(COLVAR) - COLVAR / 2,happyColor.b + ofRandom(COLVAR));
+        circleColors.push_back(happyColorVariations);
+        glm::quat q = glm::vec3(ofRandom(vQuat) - vQuat / 2, ofRandom(vQuat) - vQuat / 2, ofRandom(vQuat) - vQuat / 2);
+        quaternionCircles.push_back(q);
     }
 }
 
 void ofApp::radiusEvolution(){
+    
+    
     indicesToReSpawn.clear();
     for( int i = 0; i < radius.size(); i++){
-        radius[i].x += emotionIntensity * ofNoise(ofGetElapsedTimef()* .1 + i * 20);
-        radius[i].z += radius[i].y;
+        radius[i].x += emotionIntensity;
+        radius[i].z += emotionIntensity * radius[i].y;
         
         if(radius[i].x > MAXRAD){
 //            cout << "need respawning for index = " << ofToString(i) << endl;
             indicesToReSpawn.push_back(i);
             radius[i].x = 0;
             radius[i].z = 0;
-            radius[i].y = emotionIntensity * pow(-1, int(ofRandom(2))) * ofRandom(MAXMOVECIRCLE);
+            radius[i].y = pow(-1, int(ofRandom(2))) * ofRandom(MAXMOVECIRCLE);
+
+            
+            glm::quat q = glm::vec3(ofRandom(vQuat) - vQuat / 2, ofRandom(vQuat) - vQuat / 2, ofRandom(vQuat) - vQuat / 2);
+            quaternionCircles[i] = q;
         }
     }
+}
+
+
+
+void ofApp::showHead(){
+    switch(userEmotion.index){
+                     
+
+                 
+     case 0 :
+         // HAPPY
+         ofSetColor(255, 255);
+
+         p.begin();
+         face.draw();
+         p.end();
+
+
+         face.drawWireframe();
+           
+        
+        break;
+    
+     
+     case 1 :
+         {
+             // ANGER
+             ofSetColor(255, 255);
+             face.drawWireframe();
+             ofSetColor(255, 255);
+             lines.draw();
+             ofSetColor(255, 0, 0, 255);
+             pTest.draw();
+             break;
+         }
+
+
+     case 2 :
+         {
+             // DISGUSTED
+             drawCircles();
+             
+             ofSetColor(255, 255);
+             face.drawWireframe();
+             break;
+         }
+                 
+     }
+}
+
+
+void ofApp::startRecording(){
+    
+    redOnScreen = true;
+    
+    
+    ofxOscMessage mSend;
+    
+    mSend.setAddress("/autoRecord");
+    mSend.addFloatArg(0.);
+    
+    maxAutoRecord.sendMessage(mSend, false);
 }
