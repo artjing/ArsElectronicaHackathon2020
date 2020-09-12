@@ -1,81 +1,63 @@
-let colors = [[ '#ff7c7c', '#111' ],[ '#f1ff7c', '#28292b' ],[ '#7cff7e', '#e6e6e6' ],[ '#7c89ff', '#1666bd' ],[ '#ffc67c', '#26282a' ],[ '#7cfff4', '#e24c68' ],[ '#d97cff', '#e55256' ],[ '#af7644', '#fff' ],[ '#44af7c', '#1790d0' ],[ '#cea867', '#fff' ]];
+let x;
+let y;
+let ix;
+let iy;
+let emotionColor;
+let emotionResults = [];
 
-let count = 0;
-let old_count = 0;
-let startTime;
-let my_interval = 700;
-let old_millis;
-var Y_AXIS = 1;
-var X_AXIS = 3;
-var from;
-var to;
-var from_next;
-var to_next;
+let isShowGraphic = 0;
 
 var socket;
 var isConnected;
 
 function setup() {
-  
-  createCanvas(windowWidth, windowHeight);
-
-	old_millis = millis();
-	from = color(colors[count][0]);
-  from_next = color(colors[(count+1)%10][1]);
-
-  to = color(colors[(count+1)%10][0]);
-  to_next = color(colors[(count+2)%10][0]);
-
-
+  createCanvas(windowWidth,windowHeight);
+  noStroke();
+  background(0);
 }
 
-
-function draw(){
-
-if ((((millis()-old_millis))/my_interval)>=1){
-count = (count + 1)%10;
-old_millis = millis();
-
-}
-	
-from = color(colors[count][0]);
-from_next = color(colors[(count+1)%10][1]);
-
-to = color(colors[(count+1)%10][0]);
-to_next = color(colors[(count+2)%10][0]);
-  setGradient(0, 0, width, height, color(lerpColor(from, to, ((millis()-old_millis))/my_interval)), color(lerpColor(to, to_next, ((millis()-old_millis))/my_interval)), Math.round(Math.random()));
-
-}
-
-function resetColor()
-{
-
-  setGradient(0, 0, width, height, color(lerpColor(from, to, ((millis()-old_millis))/my_interval)), color(lerpColor(to, to_next, ((millis()-old_millis))/my_interval)), Math.round(Math.random()));
-}
+function draw() {
 
 
+  fill(255,0,0,2);
 
-function setGradient(x, y, w, h, c1, c2, axis) {
-
-  noFill();
-
-  if (axis == Y_AXIS) {  // Top to bottom gradient
-    for (var i = y; i <= y+h; i++) {
-      var inter = map(i, y, y+h, 0, 1);
-      var c = lerpColor(c1, c2, inter);
-      stroke(c);
-      line(x, i, x+w, i);
-    }
-  }  
-  else if (axis == X_AXIS) {  // Left to right gradient
-    for (var i = x; i <= x+w; i++) {
-      var inter = map(i, x, x+w, 0, 1);
-      var c = lerpColor(c1, c2, inter);
-      stroke(c);
-      line(i, y, i, y+h);
-    }
+  if(isShowGraphic == 1)
+  {
+  if(emotionResults.length > 0){
+      if(emotionColor == 0){ 
+        fill(0,255,0,2);
+      }else if(emotionColor == 1){
+        fill(255,0,255,2);
+      }else if(emotionColor == 2){
+        fill(0,0,255,2);
+      }else if(emotionColor == 3){
+        fill(255,255,0,2);
+      }else if(emotionColor == 4){
+        fill(0,255,255,2);
+      }else if(emotionColor == 5){
+        fill(255,255,255,2);
+      }else if(emotionColor == 6){
+        fill(255,0,0,2);
+      }
   }
+
+  x = mouseX;
+  y = mouseY;
+  ix = width - mouseX;
+  iy = mouseY - height;
+  circle(x,height/2,y);
+  //fill(0,255,0,2);
+  // circle(ix,height/2,iy);
+  //fill(0,0,255,2);
+  circle(y,height/2,x);
+  //fill(255,255,0,2)
+  // circle(iy,height/2,ix);
+  }else{
+    background(0);
+  }
+
 }
+
 
 function touchStarted() {
   if (getAudioContext().state !== 'running') {
@@ -83,16 +65,8 @@ function touchStarted() {
   }
 }
 
-// function setoutEmotionData(emotions) {
-//   // send these over OSC to AbletonOSC after you've selected 8 parameters to modify
-//   if (isConnected) {
-//     socket.emit('message', ['happy', emotions[0]],'angry', emotions[1],'disgusted', emotions[2],'fear', emotions[3],'surprised', emotions[4],'neutral', emotions[5],'sad', emotions[6);
-//   }
-// }
 
-
-
-function setoutEmotionData(emotions) {
+function setoutEmotionData(e) {
   // send these over OSC to AbletonOSC after you've selected 8 parameters to modify
   if (isConnected) {
     for(var i = 0;i<e.length;i++){
@@ -152,4 +126,13 @@ function setupOsc(oscPortIn, oscPortOut) {
       receiveOsc(msg[0], msg.splice(1));
     }
   });
+}
+
+function keyPressed() {
+
+  if (keyCode === LEFT_ARROW) {
+    isShowGraphic = 1;
+  } else if (keyCode === RIGHT_ARROW) {
+    isShowGraphic = 0;
+  }
 }
