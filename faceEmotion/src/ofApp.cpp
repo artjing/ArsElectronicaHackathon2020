@@ -92,10 +92,16 @@ void ofApp::setup(){
     
     happyColor = ofColor(0, 255, 10);
     vQuat = 400;
+    
+    post.setup(resImg.x, resImg.y);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    
+    
+    post.update();
+    
     
     emotionReceivingOSC();
     
@@ -130,19 +136,21 @@ void ofApp::draw(){
     
     
 //    glitch.begin();
+    post.begin();
     ofEnableDepthTest();
     cam.begin();
     if(displayContent)showHead();
     cam.end();
     ofDisableDepthTest();
+    post.end();
     
     
     if(guiON)gui.draw();
     
     if(redOnScreen){
-        ofPushMatrix();
         cout << "redOnScreen" << endl;
         redOnScreen = false;
+        ofPushMatrix();
         ofSetColor(255, 0, 0);
         ofDrawRectangle(0, 0, resImg.x, resImg.y);
         ofPopMatrix();
