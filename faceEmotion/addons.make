@@ -1,0 +1,10 @@
+ofxGui
+ofxOpenCv
+ofxOsc
+../local_addons/ofxCv
+../local_addons/ofxFaceTracker2
+../local_addons/ofxVoronoi2D
+../local_addons/ofxShaderGlitch
+../local_addons/ofxPlasticTexture
+../local_addons/ofxAutoReloadedShader
+../local_addons/ofxLibwebsockets
