@@ -14,6 +14,8 @@ function setup() {
   createCanvas(windowWidth,windowHeight);
   noStroke();
   background(0);
+
+  setupOsc(8337, 6665);
 }
 
 function draw() {
@@ -79,7 +81,7 @@ function setoutEmotionData(e) {
 
 function setoutMainEmotion(e){
   if (isConnected) {
-    var maxValEmotion = 0;
+    var maxValEmotion = - .1;
     var maxIndex = -1;
       for(var i = 0;i<e.length;i++){
         // console.log(e[i]);
@@ -92,8 +94,8 @@ function setoutMainEmotion(e){
     }
 
     if(maxIndex != -1){
-      console.log(maxIndex);
-      socket.emit('message', ["/mainEmotion", maxIndex, e[maxIndex].emotion, e[maxIndex].val]);
+      console.log(" mainEmotion :  "+ e[maxIndex].emotion + " = " + e[maxIndex].val );
+      socket.emit('message', ["/mainEmotion", e[maxIndex].emotion, e[maxIndex].val]);
     }
 }
 

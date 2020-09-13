@@ -165,13 +165,10 @@ void ofApp::updateMeshFromFace(){
     if(n > 0){
         switch(userEmotion.index){
                 
-            case 0 :
-                // HAPPY
-                face.clearColors();
-                break;
+           
                 
-             case 2 :
-                // DSIGUSTED
+             case 0 :
+             // HAPPY
 //                if(circles.size()<1){
 //                    circles.clear();
 //                    for( int i = 0; i < n; i+=3){
@@ -221,7 +218,12 @@ void ofApp::updateMeshFromFace(){
                     lines.addVertex(face.getVertices()[i % n]);
                 }
                 break;
-            
+                
+            case 2 :
+               // DSIGUSTED
+                   face.clearColors();
+                   break;
+    
            
         }
     }
@@ -286,7 +288,8 @@ void ofApp::changeEmotion(){
 
 void ofApp::emotionReceivingOSC(){
     while(emotioReceiver.hasWaitingMessages()){
-
+        
+        cout << "got a message " << endl;
         // get the next message
         ofxOscMessage m;
         emotioReceiver.getNextMessage(m);
@@ -313,12 +316,20 @@ void ofApp::emotionReceivingOSC(){
             cout << "sad val is : " << ofToString(m.getArgAsFloat(0)) << endl;
         }
         if(m.getAddress() == "/mainEmotion"){
-            int indexMainEmotion = m.getArgAsInt(0);
-            int intensityEmotion = m.getArgAsFloat(2);
-            cout << "mainEmotion : " << ofToString(m.getArgAsString(1)) << " = " << ofToString(m.getArgAsFloat(2))<< endl;
             
-            emotionState = indexMainEmotion;
-            emotionIntensity = intensityEmotion;
+            if(m.getArgAsString(0) == "happy")emotionState = 0;
+            if(m.getArgAsString(0) == "angry")emotionState = 1;
+            if(m.getArgAsString(0) == "disgusted")emotionState = 2;
+            if(m.getArgAsString(0) == "fear")emotionState = 3;
+            if(m.getArgAsString(0) == "surprise")emotionState = 4;
+            if(m.getArgAsString(0) == "neutra")emotionState = 5;
+            if(m.getArgAsString(0) == "sad")emotionState = 5;
+            cout << "m.getArgAsFloat(1) = " << ofToString(m.getArgAsFloat(1) ) << endl;
+            emotionIntensity = m.getArgAsFloat(1);
+            
+            
+            std::string effectName = "./data/Effects/emotion_" + ofToString(emotionState) + ".xml";
+            post.guiPanel.gui.loadFromFile(effectName);
         }
     }
 }
@@ -378,6 +389,9 @@ void ofApp::drawCircles(){
     }
     
     radiusEvolution();
+    
+    
+    
 }
 
 
@@ -423,22 +437,19 @@ void ofApp::showHead(){
                      
 
                  
-     case 0 :
-         // HAPPY
-         ofSetColor(255, 255);
-
-         p.begin();
-         face.draw();
-         p.end();
-
-
-         face.drawWireframe();
-           
         
-        break;
-    
-     
-     case 1 :
+            case 0 :
+            {
+                // HAPPY
+                drawCircles();
+                
+                ofSetColor(255, 255);
+                face.drawWireframe();
+                break;
+            }
+        
+         
+         case 1 :
          {
              // ANGER
              ofSetColor(255, 255);
@@ -451,22 +462,29 @@ void ofApp::showHead(){
          }
 
 
-     case 2 :
+         
+        case 2 :
+        {
+            // DSIGUST
+            ofSetColor(255, 255);
+
+            p.begin();
+            face.draw();
+            p.end();
+
+
+            face.drawWireframe();
+            break;
+        }
+                
+         case 3 :
          {
-             // DISGUSTED
-             drawCircles();
              
+             // FEAR
              ofSetColor(255, 255);
              face.draw();
              break;
          }
-     case 3 :
-     {
-         
-         // FEARofSetColor(255, 255);
-         face.draw();
-         break;
-     }
                  
      }
 }
