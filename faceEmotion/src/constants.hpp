@@ -4,8 +4,8 @@
 //
 //  Created by Pierre Tardif on 10/09/2020.
 //
-//#define WIDTH 1200
-//#define HEIGHT 1200
+#define WIDTH 1200
+#define HEIGHT 1200
 
 #define DEBUGMODE
 

@@ -81,10 +81,11 @@ void ofApp::setup(){
     }
     
 
+    
+    
     circles.clear();
     
     
-    vMesh.setup();
     
 //    glitch.setup();
     
@@ -92,16 +93,10 @@ void ofApp::setup(){
     
     happyColor = ofColor(0, 255, 10);
     vQuat = 400;
-    
-    post.setup(resImg.x, resImg.y);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    
-    
-    post.update();
-    
     
     emotionReceivingOSC();
     
@@ -128,29 +123,39 @@ void ofApp::update(){
 void ofApp::draw(){
     
     ofBackground(0,255);
+    
+    
+    
+    
+    
+    
+    
+    
     // Draw camera image
-//    grabber.draw(0, 0);
     
     // Draw tracker landmarks
 //    tracker.drawDebug();
     
     
 //    glitch.begin();
+<<<<<<< HEAD
     post.begin();
+//    grabber.draw(0, 0);
+=======
+>>>>>>> parent of 446309d... post Processing Stack Added
     ofEnableDepthTest();
     cam.begin();
     if(displayContent)showHead();
     cam.end();
     ofDisableDepthTest();
-    post.end();
     
     
     if(guiON)gui.draw();
     
     if(redOnScreen){
+        ofPushMatrix();
         cout << "redOnScreen" << endl;
         redOnScreen = false;
-        ofPushMatrix();
         ofSetColor(255, 0, 0);
         ofDrawRectangle(0, 0, resImg.x, resImg.y);
         ofPopMatrix();

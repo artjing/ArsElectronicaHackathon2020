@@ -284,14 +284,18 @@ void ofxFaceTracker2::drawDebug(int x, int y, int _w, int _h) const{
             ofNoFill();
             
             instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::LEFT_EYE).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::RIGHT_EYE).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::LEFT_EYEBROW).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::RIGHT_EYEBROW).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::NOSE_BRIDGE).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::NOSE_BASE).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::INNER_MOUTH).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::OUTER_MOUTH).draw();
-            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::JAW).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::RIGHT_EYE).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::LEFT_EYEBROW).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::RIGHT_EYEBROW).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::NOSE_BRIDGE).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::NOSE_BASE).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::INNER_MOUTH).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::OUTER_MOUTH).draw();
+//            instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::JAW).draw();
+            
+            
+//            ofMesh m = instance.getLandmarks().getImageMesh();
+//            m.drawWireframe();
             
             auto rect = instance.getBoundingBox();
             auto p = rect.getTopLeft();

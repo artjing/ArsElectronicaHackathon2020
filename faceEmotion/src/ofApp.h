@@ -7,14 +7,13 @@
 #pragma once
 
 #include "ofMain.h"
-//#include "ofxOsc.h"
-//#include "ofxGui.h"
-#include "ofxAVPostProcessing.hpp"
+#include "ofxOsc.h"
+#include "ofxGui.h"
 
 #include "ofxFaceTracker2.h"
-#include "veronoiMesh/veronoiMesh.hpp"
 #include "constants.hpp"
 
+#include "ofxShaderGlitch.h"
 #include "ofxPlasticTexture.hpp"
 
 
@@ -52,7 +51,6 @@ public:
     
     void updatePointsPositions();
     
-    veronoiMesh vMesh;
     
     Emotion userEmotion;
     
@@ -113,6 +111,4 @@ public:
     
     void startRecording();
     bool redOnScreen;
-    
-    ofxAVPostProcessing post;
 };

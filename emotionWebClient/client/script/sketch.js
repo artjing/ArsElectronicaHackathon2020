@@ -2,7 +2,7 @@ let x;
 let y;
 let ix;
 let iy;
-let emotionColor = 0;
+let emotionColor;
 let emotionResults = [];
 
 let isShowGraphic = 0;
@@ -21,13 +21,13 @@ function draw() {
 
   fill(255,0,0,2);
 
-  //console.log(emotionColor)
   if(isShowGraphic == 1)
   {
+  if(emotionResults.length > 0){
       if(emotionColor == 0){ 
         fill(0,255,0,2);
       }else if(emotionColor == 1){
-        fill(255,0,0,2);
+        fill(255,0,255,2);
       }else if(emotionColor == 2){
         fill(0,0,255,2);
       }else if(emotionColor == 3){
@@ -37,8 +37,9 @@ function draw() {
       }else if(emotionColor == 5){
         fill(255,255,255,2);
       }else if(emotionColor == 6){
-        fill(255,100,0,2);
+        fill(255,0,0,2);
       }
+  }
 
   x = mouseX;
   y = mouseY;
@@ -78,7 +79,6 @@ function setoutEmotionData(e) {
 
 function setoutMainEmotion(e){
   if (isConnected) {
-
     var maxValEmotion = 0;
     var maxIndex = -1;
       for(var i = 0;i<e.length;i++){
@@ -89,31 +89,14 @@ function setoutMainEmotion(e){
           maxValEmotion = e[i].val;
         }
       }
+    }
 
     if(maxIndex != -1){
-      //console.log(maxIndex);
+      console.log(maxIndex);
       socket.emit('message', ["/mainEmotion", maxIndex, e[maxIndex].emotion, e[maxIndex].val]);
     }
-
-    }
-
 }
 
-function setoutAllEmotionData(emotion){
-
-
-      var maxValEmotion = 0;
-      var maxIndex = -1;
-      var maxValName = '';
-      for(var i = 0;i<emotion.length-1;i++){
-        if(emotion[i].val > maxValEmotion){
-          maxIndex = i;
-          maxValEmotion = emotion[i].val;
-          emotionColor = i;
-        }
-      }
-      console.log(emotionColor);
-}
 
 function receiveOsc(address, value) {
   console.log("received OSC: " + address + ", " + value);
