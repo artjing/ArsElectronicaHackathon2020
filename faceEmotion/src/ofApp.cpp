@@ -457,9 +457,16 @@ void ofApp::showHead(){
              drawCircles();
              
              ofSetColor(255, 255);
-             face.drawWireframe();
+             face.draw();
              break;
          }
+     case 3 :
+     {
+         
+         // FEARofSetColor(255, 255);
+         face.draw();
+         break;
+     }
                  
      }
 }
