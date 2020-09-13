@@ -223,7 +223,6 @@ void ofApp::updateMeshFromFace(){
                // DSIGUSTED
                    face.clearColors();
                    break;
-    
            
         }
     }
@@ -274,6 +273,11 @@ void ofApp::keyPressed(int key){
     }
     
     if(key == 'r')startRecording();
+    
+    if(key == '0')emotionState = 0;
+    if(key == '1')emotionState = 1;
+    if(key == '2')emotionState = 2;
+    if(key == '3')emotionState = 3;
         
 }
 
@@ -328,8 +332,6 @@ void ofApp::emotionReceivingOSC(){
             emotionIntensity = m.getArgAsFloat(1);
             
             
-            std::string effectName = "./data/Effects/emotion_" + ofToString(emotionState) + ".xml";
-            post.guiPanel.gui.loadFromFile(effectName);
         }
     }
 }
@@ -359,6 +361,12 @@ void ofApp::emotionCallback(int& nEmotion){
     
     
     if(userEmotion.index != 0)initRad = false;
+    
+    
+
+    std::string effectName = "./Effects/emotion_" + ofToString(emotionState) + ".xml";
+    cout << effectName << endl;
+    post.guiPanel.gui.loadFromFile(effectName);
 }
 
 
