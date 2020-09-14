@@ -16,7 +16,6 @@ void ofApp::setup(){
     
     pythonSender.setup(HOST, PYTHONPORT);
     maxSender.setup(HOST, MAXPORT);
-    maxAutoRecord.setup(HOST, AUTORECORD);
     emotioReceiver.setup(EMOTIONPORT);
     
     emotionState = 0;
@@ -94,6 +93,8 @@ void ofApp::setup(){
     vQuat = 400;
     
     post.setup(resImg.x, resImg.y);
+    
+    recordMax = false;
 }
 
 //--------------------------------------------------------------
@@ -219,7 +220,7 @@ void ofApp::updateMeshFromFace(){
                 }
                 break;
                 
-            case 2 :
+            default :
                // DSIGUSTED
                    face.clearColors();
                    break;
@@ -350,10 +351,11 @@ void ofApp::emotionCallback(int& nEmotion){
     
     mMax.setAddress("/emotion");
     mMax.addStringArg(userEmotion.descriptor);
+    maxSender.sendMessage(mMax, false);
     mMax.setAddress("/intensity");
     mMax.addFloatArg(userEmotion.intensityEmotion);
-    
     maxSender.sendMessage(mMax, false);
+    
     pythonSender.sendMessage(mPython, false);
     
     logPrint("sending new emotionState : " + ofToString(userEmotion.descriptor));
@@ -471,7 +473,7 @@ void ofApp::showHead(){
 
 
          
-        case 2 :
+        default :
         {
             // DSIGUST
             ofSetColor(255, 255);
@@ -484,15 +486,6 @@ void ofApp::showHead(){
             face.drawWireframe();
             break;
         }
-                
-         case 3 :
-         {
-             
-             // FEAR
-             ofSetColor(255, 255);
-             face.draw();
-             break;
-         }
                  
      }
 }
@@ -501,12 +494,13 @@ void ofApp::showHead(){
 void ofApp::startRecording(){
     
     redOnScreen = true;
+    recordMax = !recordMax;
     
     
     ofxOscMessage mSend;
     
     mSend.setAddress("/autoRecord");
-    mSend.addFloatArg(0.);
+    mSend.addBoolArg(recordMax);
     
-    maxAutoRecord.sendMessage(mSend, false);
+    maxSender.sendMessage(mSend, false);
 }

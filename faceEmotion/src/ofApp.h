@@ -68,13 +68,15 @@ public:
 
 
     ofTrueTypeFont font;
-    ofxOscSender maxSender, pythonSender, maxAutoRecord;
+    ofxOscSender maxSender, pythonSender;
     ofxOscReceiver emotioReceiver;
     
     glm::vec2 resImg;
     
     void stateUpdate();
     void emotionReceivingOSC();
+    
+    bool recordMax;
     
     // utils
     void logPrint(std::string logPrint){
