@@ -1,6 +1,6 @@
-###Set up webclient
+### Set up webclient
 
-**Clone this repo **
+**Clone this repo**
 
 	$ git clone https://github.com/pierrextardif/ArsElectronicaHackathon2020.git
 	$ cd ArsElectronicaHackathon2020/emotionWebClient
@@ -8,7 +8,8 @@
 **Mac:**
 
 	$ cp -r ./ /Library/WebServer/Documents
-	[http://localhost/face/client/](http://localhost/face/client/)
+	
+[http://localhost/face/client/](http://localhost/face/client/)
 
 **Windows:**
 
@@ -16,9 +17,10 @@
 	$ python -m SimpleHTTPServer 8000
 	$ python3：
 	$ python -m http.server 8000
-	[http://127.0.0.1:8000](http://127.0.0.1:8000)
+	
+[http://127.0.0.1:8000](http://127.0.0.1:8000)
 
-**Run npm and start node:
+**Run npm and start node:**
 
 	$ npm install
 	$ node bridge.js
