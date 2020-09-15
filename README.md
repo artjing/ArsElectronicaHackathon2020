@@ -50,6 +50,7 @@ key == 'r' // sends the recording message to maxMSP and flashes screen red
 **Mac:**
 
 	$ cp -r ./ /Library/WebServer/Documents
+	$ cd /Library/WebServer/Documents
 	$ sudo apachectl start
 Open: [http://localhost/face/client/](http://localhost/face/client/)
   
