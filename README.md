@@ -15,7 +15,6 @@ This project aims to explore the ralationship between emotion and music. AI is a
 
 ## Structure
 
----
 ->Using webclient to track emotions in realtime.  
 
 ->sending emotion data to openframework by OSC to generate visual.  
@@ -25,7 +24,6 @@ This project aims to explore the ralationship between emotion and music. AI is a
 
 ## Getting Started
 
----
 ### OF
 Add faceEmotion folder to your `OF/apps` folder.
 Add folders inside local_addons to your `OF/addons` folder.
