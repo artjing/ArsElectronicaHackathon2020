@@ -2,12 +2,20 @@
 
 This is the result of our team   **Humans x AI x SOUND** for the [Ars Electronica Hackathon 2020](https://ars.electronica.art/keplersgardens/en/aixmusic-hackathon/).
 
+
+## Team Members
+
+1. Pierre Tardif
+2. Suyash Joshi
+3. Jing Dong
+4. Sergio Lecuona
+5. Amy Karle
+
 ## Description
 
 **Face tracking emotions into music**
 
 This project aims to explore the ralationship between emotion and music. AI is an extension of human's intelligence, it acting as a new media, a tool, a collaborator. We creating AI, but it will in turn reshape us. It is like a loop. How far are we from AI decoding our emotion, even consciousness. We want to use music and sound to explore this question.  
-
 
 
 ![.](./Assets/1.png)
