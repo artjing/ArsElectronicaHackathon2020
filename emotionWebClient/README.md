@@ -1,6 +1,5 @@
 ###set up webclient
 
-```
 **Clone this repo **
 
 	$ git clone https://github.com/pierrextardif/ArsElectronicaHackathon2020.git
