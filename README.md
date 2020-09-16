@@ -2,15 +2,6 @@
 
 This is the result of our team   **Humans x AI x SOUND** for the [Ars Electronica Hackathon 2020](https://ars.electronica.art/keplersgardens/en/aixmusic-hackathon/).
 
-
-## Team Members
-
-1. Pierre Tardif
-2. Suyash Joshi
-3. Jing Dong
-4. Sergio Lecuona
-5. Amy Karle
-
 ## Description
 
 **Face tracking emotions into music**
@@ -33,7 +24,7 @@ This project aims to explore the ralationship between emotion and music. AI is a
 
 ## Getting Started
 
-#### OF 
+#### OF
 Add faceEmotion folder to your `OF/apps` folder.
 Add folders inside local_addons to your `OF/addons` folder.
 
@@ -46,8 +37,8 @@ key == LEFT_ARROW // ==> show / hide content
 key == RIGHT_ARROW // ==> show / hide content
 key == 'r' // sends the recording message to maxMSP and flashes screen red
 ```
-  
-  
+
+
 ### WebClienbt & OSC sending
 
 **Clone this repo**
@@ -61,26 +52,26 @@ key == 'r' // sends the recording message to maxMSP and flashes screen red
 	$ cd /Library/WebServer/Documents
 	$ sudo apachectl start
 Open: [http://localhost/face/client/](http://localhost/face/client/)
-  
-  
+
+
 **Windows:**
 
 	$ python2：
 	$ python -m SimpleHTTPServer 8000
 	$ python3：
 	$ python -m http.server 8000
-	
+
 Open: [http://127.0.0.1:8000](http://127.0.0.1:8000)
-  
-  
+
+
 **Run npm and start node:**
 
 	$ npm install
 	$ node bridge.js
 
 Refresh the browser, and open the maxpat or openframework.app to receive OSC data
-  
-  
+
+
 ### MAX/MSP
 
 Open the emotion_mixer.maxpat in maxPatches folder.
@@ -91,3 +82,11 @@ Open the emotion_mixer.maxpat in maxPatches folder.
 
 
 
+
+## Team Members
+
+4. Amy Karle [Amy Karle](https://www.amykarle.com/) :crystal_ball:
+2. Sergio Lecuona [sergiolecuona](http://sergiolecuona.es/defaultsite) 	:minidisc:
+3. Jing Dong [techjing.art](http://techjing.art/) :dolphin:
+1. Pierre Tardif [codingcoolsh.it](https://www.codingcoolsh.it/) :floppy_disk:
+5. [Suyash Joshi](https://github.com/suyashjoshi) :iphone:
