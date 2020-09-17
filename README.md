@@ -11,6 +11,10 @@ This project aims to explore the ralationship between emotion and music. AI is a
 
 ![.](./Assets/1.png)
 
+## Results on Vimeo
+
+
+[![2.png](./Assets/2.png)](https://vimeo.com/458842012)
 
 ## Structure
 
